@@ -1,5 +1,5 @@
 import { Graphics, Text } from "pixi.js";
-import { crashSize } from "../../../shared/config";
+import { crashSize, size } from "../../../shared/config";
 import { lerp } from "../../../shared/lib/lerp";
 import { mdeToNormal } from "../../../shared/lib/mde-to-normal";
 
@@ -27,27 +27,44 @@ function useBezierTicker() {
 
   const text = new Text({
     text: "0.00x",
-    style: { fill: "white", fontSize: 40 },
-    x: 100,
-    y: 100,
+    style: {
+      fontWeight: "bold",
+      fontStyle: "italic",
+      fill: "white",
+      fontSize: 150,
+      dropShadow: {
+        blur: 50,
+        color: 0xc4009b,
+      },
+    },
   });
+  text.position = {
+    x: size.width / 2 - text.width / 2,
+    y: crashSize.height / 2,
+  };
 
   const plane = new Text({
     text: "✈️",
     style: { fontSize: 60 },
-    x: 100,
+    x: 120,
     y: 770,
+    visible: false,
   });
 
   function update() {
     if (crashed) return;
     if (multiplier >= crashMultiplier) crashed = true;
+    if (!plane.visible) plane.visible = true;
 
-    plane.position.x = bezier.width;
+    plane.position.x = bezier.width + 20;
     if (plane.position.y >= 124) plane.position.y -= SPEED;
 
     multiplier += SPEED;
-    text.text = `${getFormatterMultiplier(multiplier, crashMultiplier)}x ${crashed ? "💥" : ""} (${mdeToNormal(crashMultiplier)})`;
+    text.text = `${getFormatterMultiplier(multiplier, crashMultiplier)}x ${crashed ? "💥" : ""}`;
+    text.position = {
+      x: size.width / 2 - text.width / 2,
+      y: crashSize.height / 2,
+    };
 
     if (y >= -crashSize.height + 50) y -= SPEED;
     if (controlPoint2x <= crashSize.width) controlPoint2x += SPEED;
@@ -64,7 +81,7 @@ function useBezierTicker() {
       crashSize.width,
       y,
     );
-    bezier.stroke({ width: 4, color: 0xff0000 });
+    bezier.stroke({ width: 4, color: 0xff6fb4 });
   }
 
   return {

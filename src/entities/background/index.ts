@@ -1,7 +1,8 @@
-import { Graphics, type Application } from "pixi.js";
+import { type Container, Graphics } from "pixi.js";
 import { crashSize } from "../../shared/config";
+import { BeamWheel } from "./ui/beam-wheel";
 
-function Background(app: Application) {
+function Background(app: Container) {
   const mask = new Graphics()
     .roundRect(50, 50, crashSize.width, crashSize.height + 50, 25)
     .fill(0x000000);
@@ -41,11 +42,18 @@ function Background(app: Application) {
   }
 
   const { linesHorizontal, linesVertical } = createHorizontalLines();
+  const { wheel } = BeamWheel();
+  wheel.mask = mask;
+  wheel.alpha = 0.2;
+  wheel.scale = 10;
+  wheel.position.y = crashSize.height + 100;
+  wheel.anchor.set(0.5, 0.5);
 
-  app.stage.addChild(bg);
-  app.stage.addChild(mask);
-  app.stage.addChild(linesHorizontal);
-  app.stage.addChild(linesVertical);
+  app.addChild(bg);
+  app.addChild(mask);
+  app.addChild(wheel);
+  app.addChild(linesHorizontal);
+  app.addChild(linesVertical);
 
   const SPEED = 0.4;
 
@@ -63,6 +71,8 @@ function Background(app: Application) {
     } else {
       linesVertical.x = 1;
     }
+
+    wheel.rotation += (SPEED / 4) * (Math.PI / 180);
   }
 
   return { update };

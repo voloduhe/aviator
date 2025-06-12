@@ -1,5 +1,6 @@
 import { Application } from "pixi.js";
 import { size } from "../config";
+import { assetLoader } from "../asset-loader";
 
 async function createApp(): Promise<Application> {
   const app = new Application();
@@ -12,6 +13,8 @@ async function createApp(): Promise<Application> {
     width: size.width,
     antialias: true,
   });
+
+  await assetLoader();
 
   if (appElement) appElement.appendChild(app.canvas);
   return app;
