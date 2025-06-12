@@ -2,6 +2,7 @@ import { Graphics, Text } from "pixi.js";
 import { crashSize, size } from "../../../shared/config";
 import { lerp } from "../../../shared/lib/lerp";
 import { mdeToNormal } from "../../../shared/lib/mde-to-normal";
+import { UFO } from "../ui/ufo";
 
 function getFormatterMultiplier(value: number, maxValue: number) {
   return value <= maxValue
@@ -43,21 +44,22 @@ function useBezierTicker() {
     y: crashSize.height / 2,
   };
 
-  const plane = new Text({
-    text: "✈️",
-    style: { fontSize: 60 },
+  const { ufo } = UFO();
+
+  ufo.position = {
     x: 120,
-    y: 770,
-    visible: false,
-  });
+    y: 780,
+  };
+  ufo.visible = false;
+  ufo.scale = 0.15;
 
   function update() {
     if (crashed) return;
     if (multiplier >= crashMultiplier) crashed = true;
-    if (!plane.visible) plane.visible = true;
+    if (!ufo.visible) ufo.visible = true;
 
-    plane.position.x = bezier.width + 20;
-    if (plane.position.y >= 124) plane.position.y -= SPEED;
+    ufo.position.x = bezier.width + 70;
+    if (ufo.position.y >= 124) ufo.position.y -= SPEED;
 
     multiplier += SPEED;
     text.text = `${getFormatterMultiplier(multiplier, crashMultiplier)}x ${crashed ? "💥" : ""}`;
@@ -87,7 +89,7 @@ function useBezierTicker() {
   return {
     bezier,
     text,
-    plane,
+    ufo,
     crashed,
     update,
   };

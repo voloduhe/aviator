@@ -12,7 +12,7 @@ function CrashScene(app: Application) {
   const {
     bezier,
     text,
-    plane,
+    ufo,
     crashed,
     update: updateBezier,
   } = useBezierTicker();
@@ -28,7 +28,7 @@ function CrashScene(app: Application) {
 
   const { update: updateBackground } = Background(gameContainer);
   BezierCurve(gameContainer, bezier);
-  Plane(gameContainer, plane);
+  Plane(gameContainer, ufo);
   MultiplierText(gameContainer, text);
   StartButton(gameContainer, ticker);
   Logo(logoContainer);

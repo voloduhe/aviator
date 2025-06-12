@@ -1,6 +1,6 @@
-import type { Container, Text } from "pixi.js";
+import type { Container } from "pixi.js";
 
-function Plane(app: Container, plane: Text) {
+function Plane(app: Container, plane: Container) {
   app.addChild(plane);
 }
 
