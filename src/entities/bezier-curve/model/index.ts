@@ -1,10 +1,17 @@
-import { Graphics, Text, Ticker } from "pixi.js";
+import { Graphics, Text } from "pixi.js";
 import { crashSize } from "../../../shared/config";
 import { lerp } from "../../../shared/lib/lerp";
+import { mdeToNormal } from "../../../shared/lib/mde-to-normal";
+
+function getFormatterMultiplier(value: number, maxValue: number) {
+  return value <= maxValue
+    ? mdeToNormal(value).toFixed(1)
+    : mdeToNormal(maxValue);
+}
 
 function useBezierTicker() {
-  const crashMultiplier = +(Math.random() * 1999 + 1).toFixed(2);
-  let multiplier = 1.0;
+  const crashMultiplier = Number((Math.random() * 1999).toFixed(1)) * 100;
+  let multiplier = 100;
   let crashed = false;
 
   let y = 0;
@@ -17,27 +24,32 @@ function useBezierTicker() {
     position: { x: 50, y: crashSize.height + 100 },
     scale: { x: 0, y: 1 },
   });
+
   const text = new Text({
-    text: "1.00x",
+    text: "0.00x",
     style: { fill: "white", fontSize: 40 },
     x: 100,
     y: 100,
   });
-  const bg = new Graphics()
-    .rect(50, 50, crashSize.width, crashSize.height + 50)
-    .fill(0x000000)
-    .stroke({ width: 4, color: 0xffff00 });
 
-  const ticker = new Ticker();
+  const plane = new Text({
+    text: "✈️",
+    style: { fontSize: 60 },
+    x: 100,
+    y: 770,
+  });
 
-  ticker.add(() => {
+  function update() {
     if (crashed) return;
     if (multiplier >= crashMultiplier) crashed = true;
 
-    multiplier += SPEED;
-    text.text = `${multiplier.toFixed(2)}x ${crashed ? "💥" : ""} (${crashMultiplier})`;
+    plane.position.x = bezier.width;
+    if (plane.position.y >= 124) plane.position.y -= SPEED;
 
-    if (y >= -crashSize.height) y -= SPEED;
+    multiplier += SPEED;
+    text.text = `${getFormatterMultiplier(multiplier, crashMultiplier)}x ${crashed ? "💥" : ""} (${mdeToNormal(crashMultiplier)})`;
+
+    if (y >= -crashSize.height + 50) y -= SPEED;
     if (controlPoint2x <= crashSize.width) controlPoint2x += SPEED;
     if (controlPoint1x <= crashSize.width) controlPoint1x += SPEED;
 
@@ -53,9 +65,15 @@ function useBezierTicker() {
       y,
     );
     bezier.stroke({ width: 4, color: crashed ? 0xff0000 : 0xffff00 });
-  });
+  }
 
-  return { bezier, text, bg, ticker };
+  return {
+    bezier,
+    text,
+    plane,
+    crashed,
+    update,
+  };
 }
 
 export { useBezierTicker };

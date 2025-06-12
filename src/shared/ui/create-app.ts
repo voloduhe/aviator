@@ -10,6 +10,7 @@ async function createApp(): Promise<Application> {
     background: "#383838",
     height: size.height,
     width: size.width,
+    antialias: true,
   });
 
   if (appElement) appElement.appendChild(app.canvas);
