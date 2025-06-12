@@ -5,13 +5,13 @@ import { mdeToNormal } from "../../../shared/lib/mde-to-normal";
 
 function getFormatterMultiplier(value: number, maxValue: number) {
   return value <= maxValue
-    ? mdeToNormal(value).toFixed(1)
+    ? mdeToNormal(value).toFixed(2)
     : mdeToNormal(maxValue);
 }
 
 function useBezierTicker() {
-  const crashMultiplier = Number((Math.random() * 1999).toFixed(1)) * 100;
-  let multiplier = 100;
+  const crashMultiplier = Number((Math.random() * 1999).toFixed(2)) * 100;
+  let multiplier = 0;
   let crashed = false;
 
   let y = 0;
@@ -21,7 +21,7 @@ function useBezierTicker() {
   const SPEED = 0.1;
 
   const bezier = new Graphics({
-    position: { x: 50, y: crashSize.height + 100 },
+    position: { x: 75, y: crashSize.height + 100 },
     scale: { x: 0, y: 1 },
   });
 
@@ -64,7 +64,7 @@ function useBezierTicker() {
       crashSize.width,
       y,
     );
-    bezier.stroke({ width: 4, color: crashed ? 0xff0000 : 0xffff00 });
+    bezier.stroke({ width: 4, color: 0xff0000 });
   }
 
   return {

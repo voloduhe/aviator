@@ -7,7 +7,7 @@ async function createApp(): Promise<Application> {
 
   const appElement = document.querySelector("#app");
   await app.init({
-    background: "#383838",
+    background: "#0e0014",
     height: size.height,
     width: size.width,
     antialias: true,

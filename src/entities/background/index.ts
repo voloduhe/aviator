@@ -2,41 +2,66 @@ import { Graphics, type Application } from "pixi.js";
 import { crashSize } from "../../shared/config";
 
 function Background(app: Application) {
+  const mask = new Graphics()
+    .roundRect(50, 50, crashSize.width, crashSize.height + 50, 25)
+    .fill(0x000000);
   const bg = new Graphics()
-    .rect(50, 50, crashSize.width, crashSize.height + 50)
+    .roundRect(50, 50, crashSize.width, crashSize.height + 50, 25)
     .fill(0x000000)
-    .stroke({ width: 4, color: 0xffff00 });
+    .stroke({ width: 4, color: 0x3c3440 });
+  bg.filters = [];
 
-  function createHorizontalLines(): Graphics {
-    const lines = new Graphics();
+  function createHorizontalLines(): Record<string, Graphics> {
+    const linesHorizontal = new Graphics();
+    const linesVertical = new Graphics();
 
     for (let y = 0; y <= crashSize.height; y += 50) {
-      lines
+      linesHorizontal
         .moveTo(50, y + 50)
         .lineTo(crashSize.width + 50, y + 50)
         .stroke({
           width: 2,
-          color: 0x525200,
+          color: 0x3c3440,
+        });
+    }
+    for (let x = 0; x <= crashSize.width + 100; x += 50) {
+      linesVertical
+        .moveTo(x + 50, 50)
+        .lineTo(x + 50, crashSize.width + 50)
+        .stroke({
+          width: 2,
+          color: 0x3c3440,
         });
     }
 
-    return lines;
+    linesHorizontal.mask = mask;
+    linesVertical.mask = mask;
+
+    return { linesHorizontal, linesVertical };
   }
 
-  const lines = createHorizontalLines();
+  const { linesHorizontal, linesVertical } = createHorizontalLines();
 
   app.stage.addChild(bg);
-  app.stage.addChild(lines);
+  app.stage.addChild(mask);
+  app.stage.addChild(linesHorizontal);
+  app.stage.addChild(linesVertical);
 
   const SPEED = 0.4;
 
   function update(crashed: boolean) {
     if (crashed) return;
 
-    if (lines.y <= 49) {
-      lines.y += SPEED;
+    if (linesHorizontal.y <= 49) {
+      linesHorizontal.y += SPEED;
     } else {
-      lines.y = 1;
+      linesHorizontal.y = 1;
+    }
+
+    if (linesVertical.x >= -49) {
+      linesVertical.x -= SPEED;
+    } else {
+      linesVertical.x = 1;
     }
   }
 
