@@ -10,6 +10,10 @@ async function assetLoader() {
       alias: "ufo",
       src: "/assets/ufo.svg",
     },
+    {
+      alias: "girl",
+      src: "/assets/girl.png",
+    },
   ]);
 }
 
