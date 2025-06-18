@@ -1,25 +1,35 @@
-import { Container, Graphics, Text, type Ticker } from "pixi.js";
-import { Button } from "@pixi/ui";
+import { Assets, Container, Sprite, type Ticker } from "pixi.js";
 
 function StartButton(app: Container, ticker: Ticker) {
-  const buttonStyle = new Container();
-  const buttonContainer = new Graphics()
-    .rect(50, 900, 200, 100)
-    .fill(0x000000)
-    .stroke({ width: 2, color: 0xffff00 });
-  buttonContainer.addChild(
-    new Text({
-      text: "start",
-      style: { fill: "white", fontSize: 45 },
-      x: 100,
-      y: 925,
-    }),
-  );
-  buttonStyle.addChild(buttonContainer);
+  const asset = Assets.get("make_bet_button");
+  const assetDisabled = Assets.get("make_bet_disabled_button");
+  const button = new Sprite(asset);
 
-  const button = new Button(buttonStyle);
-  button.onPress.connect(() => ticker.start());
-  app.addChild(button.view);
+  const container = new Container();
+  container.addChild(button);
+  container.interactive = true;
+  container.cursor = "pointer";
+
+  container.on("click", () => {
+    ticker.start();
+    button.texture = assetDisabled;
+    container.interactive = false;
+    container.cursor = "default";
+  });
+  container.on("mousedown", () => {
+    button.texture = assetDisabled;
+  });
+  container.on("mouseupoutside", () => {
+    button.texture = asset;
+  });
+
+  container.position = {
+    x: 35,
+    y: 850,
+  };
+  container.scale = 1.3;
+
+  app.addChild(container);
 }
 
 export { StartButton };

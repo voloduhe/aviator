@@ -11,9 +11,11 @@ function getFormatterMultiplier(value: number, maxValue: number) {
 }
 
 function useBezierTicker() {
-  const crashMultiplier = Number((Math.random() * 1999).toFixed(2)) * 100;
+  const crashMultiplier = Number((Math.random() * 15).toFixed(2)) * 100;
   let multiplier = 0;
   let crashed = false;
+
+  window.console.log(crashMultiplier / 100);
 
   let y = 0;
   let controlPoint1x = 0;
