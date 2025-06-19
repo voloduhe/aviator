@@ -83,6 +83,10 @@ async function assetLoader() {
       alias: "plus",
       src: "/assets/plus.png",
     },
+    {
+      alias: "prev_bets",
+      src: "/assets/prev_bets.png",
+    },
   ]);
 }
 

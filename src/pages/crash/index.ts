@@ -7,7 +7,7 @@ async function CrashPage() {
   const app = await createApp();
   resizeHandler(app);
   CrashScene(app);
-  LoadingScreen(app);
+  // LoadingScreen(app);
 }
 
 export { CrashPage };

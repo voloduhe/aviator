@@ -7,6 +7,7 @@ import { Background } from "../../entities/background";
 import { Plane } from "../../entities/plane";
 import { Logo } from "../../entities/logo";
 import { Bets } from "../../features/bets";
+import { PrevBets } from "../../features/prev-bets";
 
 function CrashScene(app: Application) {
   const ticker = new Ticker();
@@ -37,6 +38,7 @@ function CrashScene(app: Application) {
   MultiplierText(gameContainer, text);
   StartButton(gameContainer, ticker);
   Bets(gameContainer);
+  PrevBets(gameContainer);
   Logo(logoContainer);
 
   ticker.add(() => {
